@@ -2,7 +2,7 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/user.model";
 import { Message } from "@/models/user.model";
 
-const POST = async (req: Request) => {
+export const POST = async (req: Request) => {
   await dbConnect();
   const { message, sendTo } = await req.json();
   try {
@@ -11,9 +11,19 @@ const POST = async (req: Request) => {
       return Response.json(
         {
           success: false,
-          message: "Message send to user not found",
+          message: `User not found with username ${sendTo}`,
         },
         { status: 404 }
+      );
+    }
+
+    if (!user.isAcceptingMessages) {
+      return Response.json(
+        {
+          success: false,
+          message: `User ${sendTo} is not accepting messages`,
+        },
+        { status: 403 }
       );
     }
 

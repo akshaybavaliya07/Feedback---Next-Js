@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import Autoplay from "embla-carousel-autoplay";
-import { HomeMessages } from "@/helpers/MessageData";
+import { HomeMessages } from "@/data/MessageData";
 import {
   Carousel,
   CarouselContent,

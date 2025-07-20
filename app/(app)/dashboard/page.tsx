@@ -13,11 +13,11 @@ import { Separator } from "@/components/ui/separator";
 import { Loader2, RefreshCcw } from "lucide-react";
 import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/helpers/ApiResponse";
-import { MessageData } from "@/helpers/MessageData";
 import MessageCard from "@/components/MessageCard";
+import { Message } from "@/models/user.model";
 
 const page = () => {
-  const [messages, setMessages] = useState<any[]>(MessageData);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [profileUrl, setProfileUrl] = useState("");
 
@@ -33,8 +33,9 @@ const page = () => {
   const acceptMessages = watch("acceptMessages");
 
   const fetchAcceptMessages = useCallback(async () => {
+    console.log("Fetching messages...");
     try {
-      const response = await axios.get<ApiResponse>('/api/accepting-messages');
+      const response = await axios.get<ApiResponse>("/api/accepting-messages");
       setValue("acceptMessages", response.data.isAcceptingMessages ?? true);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
@@ -45,7 +46,7 @@ const page = () => {
   const fetchMessages = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get('/api/get-all-messages');
+      const response = await axios.get("/api/get-all-messages");
       setMessages(response.data.messages);
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
@@ -66,11 +67,14 @@ const page = () => {
     }
 
     fetchAcceptMessages();
+    fetchMessages();
   }, [status, session]);
 
   const handleSwitchChange = async () => {
     try {
-      await axios.post('/api/accepting-messages', {isAcceptingMessages: !acceptMessages});
+      await axios.post("/api/accepting-messages", {
+        isAcceptingMessages: !acceptMessages,
+      });
       setValue("acceptMessages", !acceptMessages);
       toast.success("Messages accepting status updated");
     } catch (error) {
@@ -80,7 +84,9 @@ const page = () => {
   };
 
   const handleDeleteMessage = (messageId: string) => {
-    setMessages(messages.filter((message) => message._id !== messageId));
+    setMessages((prevMessages) =>
+      prevMessages.filter((message) => message._id !== messageId)
+    );
   };
 
   const copyToClipboard = () => {
@@ -124,7 +130,12 @@ const page = () => {
         </span>
       </div>
       <Separator />
-      <Button className="mt-4" variant="outline">
+      <Button className="mt-4" variant="outline"
+        onClick={(e) => {
+          e.preventDefault();
+          fetchMessages();
+        }}
+      >
         {isLoading ? (
           <Loader2 className="h-4 w-4 animate-spin" />
         ) : (
@@ -133,17 +144,19 @@ const page = () => {
       </Button>
 
       <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
-        {messages.length > 0 ? (
-          messages.map((message) => (
-            <MessageCard
-              key={message._id}
-              message={message}
-              onMessageDelete={handleDeleteMessage}
-            />
-          ))
-        ) : (
-          <p>No messages to display.</p>
-        )}
+        {!isLoading ? (
+          messages.length > 0 ? (
+            messages.map((message) => (
+              <MessageCard
+                key={message._id}
+                message={message}
+                onMessageDelete={handleDeleteMessage}
+              />
+            ))
+          ) : (
+            <p>No messages to display.</p>
+          )
+        ) : null}
       </div>
     </div>
   );
