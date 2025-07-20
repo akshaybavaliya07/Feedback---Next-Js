@@ -53,30 +53,49 @@ export const POST = async (req: Request) => {
 export const GET = async (req: Request) => {
   await dbConnect();
 
-  const { searchParams } = new URL(req.url);
-  const username = searchParams.get("username");
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
 
-  const user = await UserModel.findOne({ username });
-  if (!user) {
+  if (!session || !user) {
     return Response.json(
-      {
-        success: false,
-        message: "User not found",
-      },
-      {
-        status: 404,
-      }
+      { success: false, message: "Not authenticated!" },
+      { status: 401 }
     );
   }
 
-  return Response.json(
-    {
-      success: true,
-      message: "User found",
-      data: { isAcceptingMessages: user.isAcceptingMessages },
-    },
-    {
-      status: 200,
+  try {
+    const fetchUser = await UserModel.findById(user.id);
+    if (!fetchUser) {
+      return Response.json(
+        {
+          success: false,
+          message: "User not found",
+        },
+        {
+          status: 404,
+        }
+      );
     }
-  );
+
+    return Response.json(
+      {
+        success: true,
+        message: "User data retrieved successfully",
+        isAcceptingMessages: fetchUser.isAcceptingMessages,
+      },
+      {
+        status: 200,
+      }
+    );
+  } catch (error) {
+    console.log("Error retrieving user data", error);
+    return Response.json(
+      {
+        success: false,
+        message: "Error retrieving user data",
+      },
+      { status: 500 }
+    );
+  }
 };
+

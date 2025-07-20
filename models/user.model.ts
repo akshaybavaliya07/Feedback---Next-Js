@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from "bcrypt";
 
 export interface Message extends Document {
+  _id: string;
   content: string;
   createdAt: Date;
 }
