@@ -21,7 +21,7 @@ import axios, { AxiosError } from "axios";
 import { toast } from "sonner";
 import { ApiResponse } from "@/helpers/ApiResponse";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { SuggestMessagesData } from "@/data/MessageData";
+import { SuggestMessagesData } from "@/data/messageData";
 
 const specialChar = "||";
 
@@ -82,8 +82,9 @@ const page = () => {
   };
 
   return (
-    <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
-      <h1 className="text-4xl font-bold mb-6 text-center">
+    <div className="flex justify-center w-full min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#334155] text-white px-4 py-12">
+      <div className="w-full max-w-3xl mx-auto">
+      <h1 className="text-4xl font-bold mb-10 text-center">
         Public Profile Link
       </h1>
       <Form {...form}>
@@ -95,7 +96,7 @@ const page = () => {
               <FormItem>
                 <FormLabel>Send Anonymous Message to @{username}</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} placeholder="Write your message here..." className="bg-[#1e293b] text-white border border-gray-600 placeholder-gray-400 focus:ring-yellow-400 focus:border-yellow-400"/>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -103,15 +104,15 @@ const page = () => {
           />
           <div className="flex justify-center">
             {isSending ? (
-              <Button disabled>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Button disabled className="bg-yellow-400 text-black">
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
                 Sending...
               </Button>
             ) : (
               <Button
                 type="submit"
                 disabled={isSending}
-                className="cursor-pointer"
+                className="bg-yellow-400 text-black hover:bg-yellow-300 cursor-pointer"
               >
                 Send It
               </Button>
@@ -124,29 +125,26 @@ const page = () => {
         <Button
           onClick={fetchSuggestedMessages}
           disabled={suggestMessageLoading}
-          className="my-4 cursor-pointer"
+          className="bg-yellow-400 text-black hover:bg-yellow-300 font-semibold px-6 py-2 rounded-lg shadow-md transition cursor-pointer"
         >
           Suggest Messages
         </Button>
       </div>
 
-      <Card>
-        <CardHeader>
-          <h3 className="text-xl font-semibold">Messages</h3>
-        </CardHeader>
-        <CardContent className="flex flex-col space-y-4">
+      {suggestMessages.length > 0 && (
+        <div className="flex flex-col gap-4 mt-6">
           {splitSuggestedMessages(suggestMessages).map((message, index) => (
-            <Button
+            <div
               key={index}
-              variant="outline"
-              className="mb-2"
               onClick={() => handleMessageClick(message)}
+              className="bg-[#1e293b] text-white border border-gray-700 rounded-xl p-4 shadow-md hover:bg-[#2d3748] cursor-pointer transition"
             >
-              {message}
-            </Button>
+              <p className="text-sm font-medium">{message}</p>
+            </div>
           ))}
-        </CardContent>
-      </Card>
+        </div>
+      )}
+    </div>
     </div>
   );
 };
