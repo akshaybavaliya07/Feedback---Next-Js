@@ -6,13 +6,13 @@ import { acceptMessageSchema } from "@/validators/auth-validators";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import { Loader2, RefreshCcw } from "lucide-react";
 import axios, { AxiosError } from "axios";
-import { ApiResponse } from "@/helpers/ApiResponse";
+import { ApiResponse } from "@/types/ApiResponse";
 import MessageCard from "@/components/MessageCard";
 import { Message } from "@/models/user.model";
 
@@ -33,7 +33,6 @@ const page = () => {
   const acceptMessages = watch("acceptMessages");
 
   const fetchAcceptMessages = useCallback(async () => {
-    console.log("Fetching messages...");
     try {
       const response = await axios.get<ApiResponse>("/api/accepting-messages");
       setValue("acceptMessages", response.data.isAcceptingMessages ?? true);

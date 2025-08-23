@@ -1,6 +1,6 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/models/user.model";
-import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
+import { sendVerificationEmail } from "@/utils/sendVerificationEmail";
 
 export const POST = async (req: Request) => {
     await dbConnect();

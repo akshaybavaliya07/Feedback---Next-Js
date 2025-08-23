@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { signInSchema } from "@/validators/auth-validators";
 import Link from "next/link";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import {
   Form,

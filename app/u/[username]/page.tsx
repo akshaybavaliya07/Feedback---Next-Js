@@ -18,9 +18,8 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import axios, { AxiosError } from "axios";
-import { toast } from "sonner";
-import { ApiResponse } from "@/helpers/ApiResponse";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { toast } from "react-toastify";
+import { ApiResponse } from "@/types/ApiResponse";
 import { SuggestMessagesData } from "@/data/messageData";
 
 const specialChar = "||";

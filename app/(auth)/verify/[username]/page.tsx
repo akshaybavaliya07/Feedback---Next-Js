@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { verifySchema } from "@/validators/auth-validators";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 import axios, { AxiosError } from "axios";
-import { ApiResponse } from "@/helpers/ApiResponse";
+import { ApiResponse } from "@/types/ApiResponse";
 import {
   Form,
   FormControl,

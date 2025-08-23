@@ -7,7 +7,7 @@ import { signUpSchema } from "@/validators/auth-validators";
 import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useDebounceCallback } from "usehooks-ts";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import {
   Form,
@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { ApiResponse } from "@/helpers/ApiResponse";
+import { ApiResponse } from "@/types/ApiResponse";
 
 const page = () => {
   const [username, setUsername] = useState("");

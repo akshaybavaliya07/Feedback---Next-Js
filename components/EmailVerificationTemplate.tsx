@@ -10,15 +10,15 @@ import {
   Button,
 } from "@react-email/components";
 
-interface VerificationEmailProps {
+interface EmailVerificationProps {
   username: string;
   otp: string;
 }
 
-export default function VerificationEmail({
+export default function EmailVerification({
   username,
   otp,
-}: VerificationEmailProps) {
+}: EmailVerificationProps) {
   return (
     <Html lang="en" dir="ltr">
       <Head>
@@ -46,21 +46,13 @@ export default function VerificationEmail({
           </Text>
         </Row>
         <Row>
-          <Text>{otp}</Text>
+          <Text style={{ fontSize: "24px", fontWeight: "bold" }}>{otp}</Text>
         </Row>
         <Row>
           <Text>
             If you did not request this code, please ignore this email.
           </Text>
         </Row>
-        {/* <Row>
-          <Button
-            href={`http://localhost:3000/verify/${username}`}
-            style={{ color: '#61dafb' }}
-          >
-            Verify here
-          </Button>
-        </Row> */}
       </Section>
     </Html>
   );

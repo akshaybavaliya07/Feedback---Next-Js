@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import dayjs from "dayjs";
 import {
   AlertDialog,
@@ -15,10 +15,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { X, Calendar as CalendarIcon } from "lucide-react";
+import { X } from "lucide-react";
 import { Message } from "@/models/user.model";
 import axios from "axios";
-import { toast } from "sonner";
+import { toast } from "react-toastify";
 
 interface MessageCardProps {
   message: Message;
