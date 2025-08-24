@@ -18,8 +18,6 @@ export const sendVerificationEmail = async (
       html
     });
 
-    console.log("Email sent:", info);
-
     return {
       success: true,
       message: 'Verification email sent successfully.',
