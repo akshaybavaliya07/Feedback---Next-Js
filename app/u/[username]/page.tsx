@@ -20,7 +20,7 @@ import { Loader2 } from "lucide-react";
 import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { ApiResponse } from "@/types/ApiResponse";
-import { SuggestMessagesData } from "@/data/messageData";
+import { SuggestMessagesData } from "@/data/MessageData";
 
 const specialChar = "||";
 
