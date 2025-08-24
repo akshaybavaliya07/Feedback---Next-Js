@@ -13,7 +13,9 @@ export const authOptions: NextAuthOptions = {
         identifier: { label: "Email or Username", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: any): Promise<any> {
+      async authorize(credentials) {
+        if (!credentials) return null;
+
         await dbConnect();
 
         try {
@@ -22,13 +24,13 @@ export const authOptions: NextAuthOptions = {
               { email: credentials.identifier },
               { username: credentials.identifier },
             ],
-          });
+          }).lean();
 
           if (!user) throw new Error("User not found");
 
           if (!user.isVerified) {
             throw new Error(
-              "User not verified. Please verify your account before logging in."
+              `UNVERIFIED:${user.username}: User not verified. Please verify your account.`
             );
           }
 
@@ -38,7 +40,13 @@ export const authOptions: NextAuthOptions = {
           );
           if (!isValidPassword) throw new Error("Invalid password");
 
-          return user;
+          return {
+            id: user._id.toString(),
+            username: user.username,
+            email: user.email,
+            isVerified: user.isVerified,
+            isAcceptingMessages: user.isAcceptingMessages,
+          };
         } catch (error) {
           throw new Error(
             error instanceof Error ? error.message : String(error)
@@ -51,7 +59,7 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  
+
   pages: {
     signIn: "/login",
   },
@@ -59,7 +67,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user._id;
+        token.id = user.id;
         token.username = user.username;
         token.email = user.email;
         token.isVerified = user.isVerified;
@@ -79,6 +87,6 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  
+
   secret: process.env.NEXTAUTH_SECRET,
 };

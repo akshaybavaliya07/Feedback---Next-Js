@@ -23,7 +23,7 @@ export const POST = async (req: Request) => {
 
         const newVerificationCode = JSON.stringify(Math.floor(100000 + Math.random() * 900000));
         user.verificationCode = newVerificationCode;
-        user.verificationCodeExpires = new Date(Date.now() + 10 * 60 * 1000);
+        user.verificationCodeExpires = new Date(Date.now() + 15 * 60 * 1000);
         await user.save();
 
         sendVerificationEmail(user.email, user.username, newVerificationCode);
@@ -37,7 +37,7 @@ export const POST = async (req: Request) => {
                 status: 200,
             }
         );
-    } catch (error) {
+    } catch {
         return Response.json(
             {
                 success: false,

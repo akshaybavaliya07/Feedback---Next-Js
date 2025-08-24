@@ -38,7 +38,7 @@ export const POST = async (req: Request) => {
       },
       { status: 200 }
     );
-  } catch (error) {
+  } catch {
     return Response.json(
       {
         success: false,

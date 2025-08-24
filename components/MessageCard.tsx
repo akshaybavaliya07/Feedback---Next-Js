@@ -17,8 +17,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { Message } from "@/models/user.model";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import { ApiResponse } from "@/types/ApiResponse";
 
 interface MessageCardProps {
   message: Message;
@@ -31,9 +32,10 @@ const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
       const response = await axios.delete(`/api/delete-message/${message._id}`);
       toast.success(response.data.message);
       onMessageDelete(message._id);
-    } catch (error: any) {
-      console.error("Delete failed:", error);
-      toast.error(error?.response?.data?.message || "Something went wrong!");
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      console.error("Delete failed:", axiosError);
+      toast.error(axiosError?.response?.data?.message || "Something went wrong!");
     }
   };
 

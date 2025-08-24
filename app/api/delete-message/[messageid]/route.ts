@@ -2,10 +2,11 @@ import dbConnect from "@/lib/dbConnect";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 import UserModel from "@/models/user.model";
+import { NextRequest } from "next/server";
 
 export const DELETE = async (
-  req: Request,
-  { params }: { params: { messageid: string } }
+  req: NextRequest,
+  context: { params: Promise<{ messageid: string }> }
 ) => {
   await dbConnect();
   const session = await getServerSession(authOptions);
@@ -21,12 +22,12 @@ export const DELETE = async (
     );
   }
 
-  const messageId = params.messageid;
+  const { messageid } = await context.params;
 
   try {
     const updatedMessages = await UserModel.updateOne(
       { _id: session.user.id },
-      { $pull: { messages: { _id: messageId } } }
+      { $pull: { messages: { _id: messageid } } }
     );
 
     if (updatedMessages.modifiedCount === 0) {

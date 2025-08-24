@@ -4,7 +4,7 @@ import { authOptions } from "../auth/[...nextauth]/authOptions";
 import UserModel from "@/models/user.model";
 import mongoose from "mongoose";
 
-export const GET = async (req: Request) => {
+export const GET = async () => {
   await dbConnect();
   const session = await getServerSession(authOptions);
   if (!session || !session.user) {
@@ -24,7 +24,7 @@ export const GET = async (req: Request) => {
   try {
     const userWithMessages = await UserModel.aggregate([
       { $match: { _id: userId } },
-      { $unwind: { path: "$messages", preserveNullAndEmptyArrays: true } as any },
+      { $unwind: { path: "$messages", preserveNullAndEmptyArrays: true }},
       { $sort: { "messages.createdAt": -1 } },
       { $group: { _id: "$_id", messages: { $push: "$messages" } } },
     ]);
@@ -46,7 +46,7 @@ export const GET = async (req: Request) => {
       },
       { status: 200 }
     );
-  } catch (error) {
+  } catch {
     return Response.json(
       {
         success: false,

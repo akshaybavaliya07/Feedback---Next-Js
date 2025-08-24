@@ -7,7 +7,6 @@ import {
   Row,
   Section,
   Text,
-  Button,
 } from "@react-email/components";
 
 interface EmailVerificationProps {
@@ -34,7 +33,9 @@ export default function EmailVerification({
           fontStyle="normal"
         />
       </Head>
+
       <Preview>Here&apos;s your verification code: {otp}</Preview>
+
       <Section>
         <Row>
           <Heading as="h2">Hello {username},</Heading>
@@ -47,6 +48,9 @@ export default function EmailVerification({
         </Row>
         <Row>
           <Text style={{ fontSize: "24px", fontWeight: "bold" }}>{otp}</Text>
+        </Row>
+        <Row>
+          <Text>This code is valid for <strong>15 minutes</strong>.</Text>
         </Row>
         <Row>
           <Text>

@@ -11,12 +11,14 @@ export const sendVerificationEmail = async (
   try {
     const html = await render(<EmailVerification username={username} otp={otp} />);
 
-    await mailer.sendMail({
+    const info = await mailer.sendMail({
       from: `Ghost Whisper <${process.env.EMAIL_USER}>`,
       to: email,
       subject: 'Verify your Ghost Whisper account',
       html
     });
+
+    console.log("Email sent:", info);
 
     return {
       success: true,

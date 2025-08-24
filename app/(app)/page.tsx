@@ -65,7 +65,7 @@ export default function Home() {
               />
               <button
                 type="submit"
-                className="px-8 py-3 bg-yellow-400 text-black rounded-xl font-semibold hover:bg-yellow-300 transition"
+                className="px-8 py-3 bg-yellow-400 text-black rounded-xl cursor-pointer font-semibold hover:bg-yellow-300 transition"
               >
                 Go
               </button>

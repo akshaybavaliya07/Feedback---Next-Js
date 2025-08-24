@@ -42,7 +42,7 @@ export const POST = async (req: Request) => {
       password,
       email,
       verificationCode: otp,
-      verificationCodeExpires: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes from now
+      verificationCodeExpires: new Date(Date.now() + 15 * 60 * 1000), // 10 minutes from now
     });
 
     await newUser.save();

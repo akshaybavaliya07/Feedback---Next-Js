@@ -31,7 +31,7 @@ const splitSuggestedMessages = (messageString: string): string[] => {
 const initialMessageString =
   "What's your favorite movie?||Do you have any pets?||What's your dream job?";
 
-const page = () => {
+const Page = () => {
   const [isSending, setIsSending] = useState(false);
   const [suggestMessages, setSuggestMessages] = useState(initialMessageString);
   const [suggestMessageLoading, setSuggestMessageLoading] = useState(false);
@@ -148,4 +148,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

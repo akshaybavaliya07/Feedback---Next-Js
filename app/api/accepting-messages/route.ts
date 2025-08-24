@@ -37,7 +37,7 @@ export const POST = async (req: Request) => {
         status: 200,
       }
     );
-  } catch (error) {
+  } catch {
     return Response.json(
       {
         success: false,
@@ -50,7 +50,7 @@ export const POST = async (req: Request) => {
   }
 };
 
-export const GET = async (req: Request) => {
+export const GET = async () => {
   await dbConnect();
 
   const session = await getServerSession(authOptions);

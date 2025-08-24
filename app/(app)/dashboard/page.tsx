@@ -16,7 +16,7 @@ import { ApiResponse } from "@/types/ApiResponse";
 import MessageCard from "@/components/MessageCard";
 import { Message } from "@/models/user.model";
 
-const page = () => {
+const Page = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [profileUrl, setProfileUrl] = useState("");
@@ -40,7 +40,7 @@ const page = () => {
       const axiosError = error as AxiosError<ApiResponse>;
       toast.error(axiosError.response?.data?.message);
     }
-  }, []);
+  }, [setValue]);
 
   const fetchMessages = useCallback(async () => {
     setIsLoading(true);
@@ -67,7 +67,7 @@ const page = () => {
 
     fetchAcceptMessages();
     fetchMessages();
-  }, [status, session]);
+  }, [status, session, router, fetchAcceptMessages, fetchMessages]);
 
   const handleSwitchChange = async () => {
     try {
@@ -111,7 +111,7 @@ const page = () => {
               className="flex-1 p-3 rounded-lg bg-[#0f172a] text-gray-400 border border-gray-600"
               disabled
             />
-            <Button onClick={copyToClipboard} className="bg-yellow-400 text-black hover:bg-yellow-300">Copy</Button>
+            <Button onClick={copyToClipboard} className="bg-yellow-400 text-black hover:bg-yellow-300 cursor-pointer">Copy</Button>
           </div>
         </div>
 
@@ -169,4 +169,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

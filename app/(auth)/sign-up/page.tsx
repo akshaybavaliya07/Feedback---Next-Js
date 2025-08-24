@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { ApiResponse } from "@/types/ApiResponse";
 
-const page = () => {
+const Page = () => {
   const [username, setUsername] = useState("");
   const [usernameMessage, setUsernameMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -39,7 +39,7 @@ const page = () => {
     },
   });
 
-  const checkForUniqueUsername = async () => {
+  const checkForUniqueUsername = useCallback(async () => {
     if (username && username.trim().length >= 3) {
       setUsernameMessage("");
       try {
@@ -55,11 +55,11 @@ const page = () => {
     } else {
       setUsernameMessage("");
     }
-  };
+  }, [username]);
 
   useEffect(() => {
     checkForUniqueUsername();
-  }, [username]);
+  }, [checkForUniqueUsername]);
 
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     setSubmitting(true);
@@ -71,7 +71,7 @@ const page = () => {
       } else {
         toast.error(response.data.message);
       }
-    } catch (error) {
+    } catch {
       toast.error("An error occurred during sign up.");
     } finally {
       setSubmitting(false);
@@ -152,7 +152,7 @@ const page = () => {
             <Button
               type="submit"
               disabled={submitting}
-              className={`w-full bg-yellow-500 text-black hover:bg-yellow-400 transition-colors ${
+              className={`w-full bg-yellow-500 text-black hover:bg-yellow-400 cursor-pointer transition-colors ${
                 submitting ? "opacity-50" : ""
               }`}
             >
@@ -181,4 +181,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

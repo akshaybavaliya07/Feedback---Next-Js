@@ -21,13 +21,17 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
-const page = () => {
+const Page = () => {
   const [submitting, setSubmitting] = useState(false);
+  const [sending, setSending] = useState(false);
   const params = useParams();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof verifySchema>>({
     resolver: zodResolver(verifySchema),
+    defaultValues: {
+      code: ""
+    }
   });
 
   const onSubmit = async (data: z.infer<typeof verifySchema>) => {
@@ -49,6 +53,24 @@ const page = () => {
       setSubmitting(false);
     }
   };
+
+  const resendCode = async () => {
+    try {
+      setSending(true);
+      const response = await axios.post<ApiResponse>("/api/generate-new-verification-code", {
+        username: params.username,
+      });
+      toast.success(response.data.message);
+    } catch (error) {
+      const axiosError = error as AxiosError<ApiResponse>;
+      toast.error(
+        axiosError.response?.data.message ||
+          "Failed to resend verification code."
+      );
+    } finally {
+      setSending(false);
+    }
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#334155] text-white px-4">
@@ -87,7 +109,7 @@ const page = () => {
             <Button
               type="submit"
               disabled={submitting}
-              className={`w-full bg-yellow-500 text-black hover:bg-yellow-400 transition-colors ${
+              className={`w-full bg-yellow-500 text-black cursor-pointer hover:bg-yellow-400 transition-colors ${
                 submitting ? "opacity-50" : ""
               }`}
             >
@@ -102,9 +124,18 @@ const page = () => {
             </Button>
           </form>
         </Form>
+
+        <Button
+          type="button"
+          disabled={sending}
+          onClick={resendCode}
+          className="w-full bg-gray-700 text-white hover:bg-gray-500 transition-colors cursor-pointer"
+        >
+          {sending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Resend Code"}
+        </Button>
       </div>
     </div>
   );
 };
 
-export default page;
+export default Page;
