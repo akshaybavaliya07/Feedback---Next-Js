@@ -16,30 +16,26 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Ghost Whisper",
+  description:
+    "Ghost Whisper – Where your voice is heard, but your identity remains a mystery.",
   icons: {
-    icon: "/Ghost.svg",
+    icon: "/ghost.svg",
   },
-  description: "Ghost Whisper – Where your voice is heard, but your identity remains a mystery.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/Ghost.svg" />
-      </head>
-      <AuthProvider>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          {children}
-          <ToastContainer position="top-right" autoClose={2000} />
-        </body>
-      </AuthProvider>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <AuthProvider>{children}</AuthProvider>
+        <ToastContainer position="top-right" autoClose={2000} />
+      </body>
     </html>
   );
 }
